@@ -3,7 +3,7 @@
 import { signIn } from 'next-auth/react';
 
 export default function SignInPage() {
-
+  
     const handleSubmit = async (event) => {
         event.preventDefault();
         const email = event.target.email.value;
@@ -14,13 +14,13 @@ export default function SignInPage() {
           redirect:true,
           email,
           password,
-          callbackUrl: `http://localhost:3000/home`
+          callbackUrl: `http://localhost:3000/`
         });
     
-        if (result?.error) {
-          // Handle error messages here, such as displaying them to the user
-          console.log('incorrect user or pass')
-        }
+        // if (result?.error) {
+        //   // Handle error messages here, such as displaying them to the user
+        //   console.log('incorrect user or pass')
+        // }
       };
     
     return (
@@ -57,10 +57,10 @@ export default function SignInPage() {
                       />
                     </div>
                     <div className="flex items-center justify-between">
-                      <a href="/register" className="text-sm text-white hover:underline-offset-2">Don't have an account?</a>
+                      <a href="/auth/signup" className="text-sm text-white hover:underline-offset-2 hover:underline">Don't have an account?</a>
                       <button
                         type="submit"
-                        className="px-6 py-2 text-black bg-white rounded-full hover:bg-gray-100"
+                        className="px-6 py-2 text-purple-600 bg-white text-lg font-semibold rounded-full hover:bg-gray-100 focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50"
                       >
                         Login
                       </button>

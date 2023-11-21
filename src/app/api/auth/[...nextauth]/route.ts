@@ -25,6 +25,9 @@ export const authOptions:AuthOptions = {
           }
         })
     ],
+    pages: {
+      signIn: '/auth/signin', // Custom sign-in page route
+    },
     session : { strategy: "jwt" },
     callbacks: {
       async jwt({token,user}){
