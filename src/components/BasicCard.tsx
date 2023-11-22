@@ -1,3 +1,5 @@
+'use client'
+import { useEffect, useState } from 'react';
 import * as React from 'react';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Button from '@mui/joy/Button';
@@ -5,65 +7,69 @@ import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
-import BookmarkAdd from '@mui/icons-material/BookmarkAddOutlined';
-import { format } from 'path';
+import DeleteIcon from '@mui/icons-material/Delete';
+import getCompany from '@/libs/getCompany'
+import CircularProgress from '@mui/material/CircularProgress'; 
 
-interface Props {
-    companyname: string;
-    bookingdate: string;
-    imgsrc: string;
-}
+export default function BasicCard({ json, type }: { json: any, type: string }) {
+    
+    const [imgsrc, setImgSrc] = useState(type !== 'booking' ? json.picture : null);
+    const companyname = type === 'booking' ? json.company.name : json.name;
+    const bookingdate = type === 'booking' ? new Date(json.bookingDate).toDateString() : null;
 
-export default function BasicCard({ companyname, bookingdate, imgsrc }: Props) {
+    useEffect(() => {
+        const fetchCompanyData = async () => {
+            if (type === 'booking' && json.company) {
+                try {
+                    const response = await getCompany(json.company.id);
+                    setImgSrc(response.data.picture);
+                } catch (error) {
+                    console.error("Error fetching company data:", error);
+                }
+            }
+        };
 
-    const formattedDate = new Date(bookingdate).toDateString();
+        fetchCompanyData();
+    }, [json, type]); // Dependencies: json and type
 
     return (
-        <Card sx={{ width: 320 }}>
+        <Card className='hover:scale-110 duration-300 transition ease-in-out' sx={{ width: 320 }}>
             <div>
                 <Typography level="title-lg">{companyname}</Typography>
-                <IconButton
-                    aria-label="bookmark Bahamas Islands"
+                <IconButton className='hover:scale-110 duration-300 transition ease-in-out'
+                    aria-label="bookmark"
                     variant="plain"
                     color="neutral"
                     size="sm"
                     sx={{ position: 'absolute', top: '0.875rem', right: '0.5rem' }}
                 >
-                    <BookmarkAdd />
+                    <DeleteIcon/>
                 </IconButton>
             </div>
             <AspectRatio minHeight="120px" maxHeight="200px">
                 <img
                     src={imgsrc}
-                    srcSet={imgsrc}
+                    alt={companyname}
                     loading="lazy"
-                    alt=""
                 />
             </AspectRatio>
             <CardContent orientation="horizontal">
-                <div>
-                    <Typography level="body-xs">Booking Date:</Typography>
-                    <Typography fontSize="md" fontWeight="lg">{formattedDate}</Typography>
-                </div>
-                <Button
+                {type === 'booking' && (
+                    <div>
+                        <Typography level="body-xs">Booking Date:</Typography>
+                        <Typography fontSize="md" fontWeight="lg">{bookingdate}</Typography>
+                    </div >
+                )}
+                <Button className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
                     variant="outlined"
                     size="md"
                     color="primary"
-                    aria-label="Explore Bahamas Islands"
                     sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
                 >
                     Edit
                 </Button>
-                <Button
-                    variant="outlined"
-                    size="md"
-                    color="danger"
-                    aria-label="Explore Bahamas Islands"
-                    sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
-                >
-                    Remove
-                </Button>
-            </CardContent>
-        </Card>
+            </CardContent >
+        </Card >
     );
+    
 }

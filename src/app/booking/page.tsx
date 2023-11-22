@@ -1,13 +1,13 @@
 import BookingForm from "@/components/BookingForm"
-import BookingCatalog from "@/components/BookingCatalog"
+import CardCatalog from "@/components/CardCatalog"
 import getBookings from "@/libs/getBookings"
 import { authOptions } from "../api/auth/[...nextauth]/route"
 import getUserProfile from "@/libs/getUserProfile"
 import { getServerSession } from "next-auth"
 import TopMenu from "@/components/TopMenu"
 
-async function Booking(){
-
+async function Booking({ onLoaded }){
+    
     const session = await getServerSession(authOptions)
   
     if (!session||!session.user.token) return null
@@ -18,9 +18,8 @@ async function Booking(){
 
     return (
         <div>
-            <TopMenu id={profile.data.name}/>
             <div className="grid justify-items-center text-black">
-                <BookingCatalog bookingjson={bookings}/>
+                <CardCatalog cardjson={bookings} typeofcard='booking'/>
             </div>
         </div>
     )

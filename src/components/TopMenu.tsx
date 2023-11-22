@@ -15,6 +15,7 @@ function TopMenu({ id }: { id: string }) {
                 <div className="text-black p-2 text-white text-lg font-semibold">{id}</div>
             </div>
             <div className="flex px-5 space-x-5">
+                <a className="text-black p-2 text-white text-lg font-semibold" href="/">Booking</a>
                 <a className="text-black p-2 text-white text-lg font-semibold" href="/company">Company</a>
                 <button className="text-black p-2 text-white text-lg font-semibold" onClick={handleLogout}>Logout</button>
             </div>

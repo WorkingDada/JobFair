@@ -4,7 +4,10 @@ import TopMenu from '@/components/TopMenu'
 import { authOptions } from './api/auth/[...nextauth]/route'
 import NextAuthProvider from '@/providers/NextAuthProvider'
 import { getServerSession } from 'next-auth'
-
+import { Suspense } from 'react'
+import CircularProgress from '@mui/joy/CircularProgress';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -20,14 +23,38 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
 
+  const loadingScreen = (
+    <Box style={{
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+      width: '100vw',
+      backgroundColor: '#0000',
+      padding: '2rem',
+      boxSizing: 'border-box' // Ensures padding doesn't add to the height and width
+    }}>
+      <CircularProgress variant="soft"/>
+      <Typography variant="h6" fontSize="md" fontWeight="lg">
+        Loading, please wait...
+      </Typography>
+    </Box>
+  );
+
   const session = await getServerSession(authOptions)
 
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Suspense fallback={loadingScreen}>
           <NextAuthProvider session={session}>
+            {
+              session ? <TopMenu/> : null
+            }
             {children}
           </NextAuthProvider>
+        </Suspense>
       </body>
     </html>
   )

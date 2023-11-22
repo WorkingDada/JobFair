@@ -14,18 +14,7 @@ export default function BookingForm() {
   const [bookDate, setReserveDate] = useState<Dayjs | null>(null);
   const [companyName, setCompany] = useState("");
 
-  const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
-
   const makeReservation = () => {
-    if (companyName && bookDate) {
-      const booking: BookingItem = {
-        bookingDate: bookDate.format("YYYY/MM/DD"),
-        company: companyName,
-      };
-      dispatch(addReservation(booking));
-      router.push("/");
-    }
   };
 
   const companies = getCompanies()
