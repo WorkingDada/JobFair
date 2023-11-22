@@ -5,6 +5,7 @@ import getUserProfile from '@/libs/getUserProfile'
 import MyBooking from '@/components/MyBooking'
 import Booking from './booking/page'
 import RowCard from '@/components/RowCard'
+import BasicCard from '@/components/BasicCard'
 
 async function Home() {
 

@@ -51,7 +51,7 @@ export default function RowCard({ imgsrc, companyname, bookingdate }: Props) {
           width: 'auto', // Set the width to be auto to adjust to content
         }}
       >
-        Ticket
+        Booking
       </CardOverflow>
     </Card>
   );

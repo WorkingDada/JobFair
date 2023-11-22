@@ -19,7 +19,7 @@ async function Booking(){
     return (
         <div>
             <TopMenu id={profile.data.name}/>
-            <div className="h-96 bg-white grid justify-items-center text-black">
+            <div className="grid justify-items-center text-black">
                 <BookingCatalog bookingjson={bookings}/>
             </div>
         </div>
