@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import BasicCard from "./BasicCard";
 
-export default function CardCatalog({ cardjson, typeofcard , role}: { cardjson: Promise<JSON>, typeofcard: string , role: string}) {
+export default function CardCatalog({ cardjson, typeofcard , role }: { cardjson: Promise<JSON>, typeofcard: string , role: string}) {
     const [cardData, setCardData] = useState([]);
 
     useEffect(() => {

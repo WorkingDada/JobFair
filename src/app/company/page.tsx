@@ -20,12 +20,12 @@ async function company() {
         <div className='pt-40 h-screen bg-white'>
             <div className='flex justify-between items-center p-5'>
                 <div className='text-3xl font-extrabold text-center flex-grow'>Company For Booking!</div>
-                <IconButton className='flex items-center justify-between' onClick='' aria-label="add company">
+                <IconButton className='' onClick='' aria-label="add company">
                     <AddIcon fontSize="large" />
                 </IconButton>
             </div>
             <div className="grid justify-items-center">
-                <CardCatalog cardjson={companies} typeofcard='company' role={profile.data} />
+                <CardCatalog cardjson={companies} typeofcard='companies' role={profile.data.role} />
             </div>
         </div>
     )

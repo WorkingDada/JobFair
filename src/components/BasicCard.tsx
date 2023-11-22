@@ -1,4 +1,3 @@
-'use client'
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 import AspectRatio from '@mui/joy/AspectRatio';
@@ -11,22 +10,39 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import getCompany from '@/libs/getCompany'
 import Add from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import { useSession } from 'next-auth/react'
 import axios from 'axios'
 
-export default function BasicCard({ json, type, role }: { json: any, type: string, role: string }) {
+export default function BasicCard({ json, type, role }: { json: any, type: string, role: string}) {
 
-    const [imgsrc, setImgSrc] = useState(type !== 'booking' ? json.picture : null);
-    const companyname = type === 'booking' ? json.company.name : json.name;
-    const bookingdate = type === 'booking' ? new Date(json.bookingDate).toDateString() : null;
+    const [imgsrc, setImgSrc] = useState(type !== 'bookings' ? json.picture : null);
+    const companyname = type === 'bookings' ? json.company.name : json.name;
+    const bookingdate = type === 'bookings' ? new Date(json.bookingDate).toDateString() : null;
     const address = json.address;
     const business = json.business;
     const province = json.province;
     const postalcode = json.postalcode;
     const tel = json.tel;
+    
+    const handleDelete = async () => {
+        try {
+            const response = await axios.delete(`http://localhost:5001/api/v1/${type}/${json._id}`, {
+                headers: {
+                    'Authorization': `Bearer ${session.data.user.token}` // Use the session token
+                }
+            });
 
+
+        } catch (error) {
+            console.error("Error deleting the booking:", error);
+            // Handle the error, such as showing a message to the user
+        }
+    };
+
+    
     useEffect(() => {
         const fetchCompanyData = async () => {
-            if (type === 'booking' && json.company) {
+            if (type === 'bookings' && json.company) {
                 try {
                     const response = await getCompany(json.company.id);
                     setImgSrc(response.data.picture);
@@ -38,21 +54,10 @@ export default function BasicCard({ json, type, role }: { json: any, type: strin
 
         fetchCompanyData();
     }, [json, type]); // Dependencies: json and type
-    
-    const handleDelete = async (event) => {
-        event.stopPropagation(); // Prevent the click from bubbling up to the card container
-        try {
-            // Replace with the actual API endpoint you are using for deletion
-            const response = await axios.delete(`/api/deleteCompany/${json.id}`);
-            if (response.status === 200) {
-                console.log('Company deleted successfully');
-                // Optionally, trigger a re-fetch of the data or update state to remove the deleted card
-            }
-        } catch (error) {
-            console.error("Error deleting the company:", error);
-            // Handle error, possibly display a message to the user
-        }
-    };
+
+
+    const session = useSession()
+
 
     return (
         <Card className='hover:scale-110 duration-300 transition ease-in-out' sx={{ width: 320 }}>
@@ -79,7 +84,7 @@ export default function BasicCard({ json, type, role }: { json: any, type: strin
                         variant="plain"
                         color="neutral"
                         size="sm"
-                        onClick={handleDelete} 
+                        onClick={handleDelete}
                         sx={{ position: 'absolute', top: '0.875rem', right: '0.5rem' }}
                     >
                         <DeleteIcon />
@@ -94,13 +99,13 @@ export default function BasicCard({ json, type, role }: { json: any, type: strin
                 />
             </AspectRatio>
             <CardContent orientation="horizontal" className="flex items-center justify-between">
-                {type === 'booking' && (
+                {type === 'bookings' && (
                     <div>
                         <Typography level="body-xs">Booking Date:</Typography>
                         <Typography fontSize="md" fontWeight="lg">{bookingdate}</Typography>
                     </div >
                 )}
-                {type !== 'booking' && (
+                {type !== 'bookings' && (
                     <CardContent>
                         <Typography level="title-md">{address}</Typography>
                         <div className='flex'>
@@ -111,16 +116,15 @@ export default function BasicCard({ json, type, role }: { json: any, type: strin
                     </CardContent>
                 )}
                 {/* ADD ACTION TO THIS FORM */}
-                <form>
-                    <Button className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
-                        variant="solid"
-                        type="submit"
-                        size="md"
-                        color="success"
-                        sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
-                    >
+                <form action=''>
+                <Button className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+                    variant="outlined"
+                    size="md"
+                    color="success"
+                    sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
+                >
                         {
-                            type === 'booking' ? 'Book Again' : 'Book'
+                            type === 'bookings' ? 'Book Again' : 'Book'
                         }
                     </Button>
                 </form>

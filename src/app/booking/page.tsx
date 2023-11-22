@@ -20,7 +20,7 @@ async function Booking(){
     return (
         <div>
             <div className="grid justify-items-center text-black">
-                <CardCatalog cardjson={bookings} typeofcard='booking' role={profile.data.role}/>
+                <CardCatalog cardjson={bookings} typeofcard='bookings' role={profile.data.role}/>
             </div>
         </div>
     )

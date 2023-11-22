@@ -24,25 +24,6 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
 
-  const loadingScreen = (
-    <Box style={{
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
-      width: '100vw',
-      backgroundColor: '#0000',
-      padding: '2rem',
-      boxSizing: 'border-box' // Ensures padding doesn't add to the height and width
-    }}>
-      <CircularProgress variant="soft"/>
-      <Typography variant="h6" fontSize="md" fontWeight="lg">
-        Loading, please wait...
-      </Typography>
-    </Box>
-  );
-
   const session = await getServerSession(authOptions)
 
   const profile = getUserProfile(session)
@@ -50,6 +31,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        
           <NextAuthProvider session={session}>
             {
               session ? <TopMenu id={session.user.name.toUpperCase()}/> : null
