@@ -9,9 +9,9 @@ import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
 import getCompany from '@/libs/getCompany'
-import CircularProgress from '@mui/material/CircularProgress';
 import Add from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import axios from 'axios'
 
 export default function BasicCard({ json, type, role }: { json: any, type: string, role: string }) {
 
@@ -38,10 +38,20 @@ export default function BasicCard({ json, type, role }: { json: any, type: strin
 
         fetchCompanyData();
     }, [json, type]); // Dependencies: json and type
-
-    const handleBookClick = (event) => {
+    
+    const handleDelete = async (event) => {
         event.stopPropagation(); // Prevent the click from bubbling up to the card container
-        // Add your book handling logic here
+        try {
+            // Replace with the actual API endpoint you are using for deletion
+            const response = await axios.delete(`/api/deleteCompany/${json.id}`);
+            if (response.status === 200) {
+                console.log('Company deleted successfully');
+                // Optionally, trigger a re-fetch of the data or update state to remove the deleted card
+            }
+        } catch (error) {
+            console.error("Error deleting the company:", error);
+            // Handle error, possibly display a message to the user
+        }
     };
 
     return (
@@ -69,6 +79,7 @@ export default function BasicCard({ json, type, role }: { json: any, type: strin
                         variant="plain"
                         color="neutral"
                         size="sm"
+                        onClick={handleDelete} 
                         sx={{ position: 'absolute', top: '0.875rem', right: '0.5rem' }}
                     >
                         <DeleteIcon />
@@ -106,7 +117,6 @@ export default function BasicCard({ json, type, role }: { json: any, type: strin
                         type="submit"
                         size="md"
                         color="success"
-                        onClick={handleBookClick}
                         sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
                     >
                         {
