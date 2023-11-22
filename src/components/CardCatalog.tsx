@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import BasicCard from "./BasicCard";
 
-export default function CardCatalog({ cardjson, typeofcard }: { cardjson: Promise<JSON>, typeofcard: string }) {
+export default function CardCatalog({ cardjson, typeofcard , role}: { cardjson: Promise<JSON>, typeofcard: string , role: string}) {
     const [cardData, setCardData] = useState([]);
 
     useEffect(() => {
@@ -17,10 +17,11 @@ export default function CardCatalog({ cardjson, typeofcard }: { cardjson: Promis
                 {
                     cardData.map((jsonItem, index) => (
                         <div className="p-5" key={index}>
-                            <BasicCard json={jsonItem} type={typeofcard}/>
+                            <BasicCard json={jsonItem} type={typeofcard} role={role}/>
                         </div>
                     ))
                 }
+                <div></div>
             </div>
         </>
     );

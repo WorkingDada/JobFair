@@ -14,7 +14,7 @@ async function Home() {
         <div className='mx-5 text-3xl font-extrabold pl-20 pt-10'>
           MY BOOKING
         </div>
-        <div className='p-5 mx-20 my-5 rounded-3xl bg-gray-100'>
+        <div className='p-5 mx-16 my-5 rounded-3xl bg-gray-100'>
             <Booking/>
         </div>
       </div>

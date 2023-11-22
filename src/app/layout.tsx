@@ -9,6 +9,7 @@ import CircularProgress from '@mui/joy/CircularProgress';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import './globals.css'
+import getUserProfile from '@/libs/getUserProfile'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -44,17 +45,17 @@ export default async function RootLayout({
 
   const session = await getServerSession(authOptions)
 
+  const profile = getUserProfile(session)
+
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Suspense fallback={loadingScreen}>
           <NextAuthProvider session={session}>
             {
-              session ? <TopMenu/> : null
+              session ? <TopMenu id={session.user.name.toUpperCase()}/> : null
             }
             {children}
           </NextAuthProvider>
-        </Suspense>
       </body>
     </html>
   )

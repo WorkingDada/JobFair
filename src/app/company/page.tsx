@@ -18,7 +18,7 @@ async function company() {
                 Company For Booking!
             </div>
             <div className="grid justify-items-center">
-                <CardCatalog cardjson={companies} typeofcard='company' />
+                <CardCatalog cardjson={companies} typeofcard='company' role={profile.data.role}/>
             </div>
         </div>
     )

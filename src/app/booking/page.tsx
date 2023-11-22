@@ -5,8 +5,9 @@ import { authOptions } from "../api/auth/[...nextauth]/route"
 import getUserProfile from "@/libs/getUserProfile"
 import { getServerSession } from "next-auth"
 import TopMenu from "@/components/TopMenu"
+import NoBookingCard from "@/components/NoBookingCard"
 
-async function Booking({ onLoaded }){
+async function Booking(){
     
     const session = await getServerSession(authOptions)
   
@@ -19,7 +20,7 @@ async function Booking({ onLoaded }){
     return (
         <div>
             <div className="grid justify-items-center text-black">
-                <CardCatalog cardjson={bookings} typeofcard='booking'/>
+                <CardCatalog cardjson={bookings} typeofcard='booking' role={profile.data.role}/>
             </div>
         </div>
     )
