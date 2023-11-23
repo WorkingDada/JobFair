@@ -8,6 +8,7 @@ import BasicCard from '@/components/BasicCard'
 
 
 async function Home() {
+
   return (
     <main className='text-black bg-white h-screen pt-20'>
       <div className='items-center'>

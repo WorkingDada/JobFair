@@ -25,7 +25,8 @@ export default async function RootLayout({
 }) {
 
   const session = await getServerSession(authOptions)
-
+  console.log('wow')
+  console.log(session)
   const profile = getUserProfile(session)
 
   return (

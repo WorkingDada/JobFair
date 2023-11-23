@@ -8,6 +8,7 @@ export default function CardCatalog({ cardjson, typeofcard , role }: { cardjson:
     useEffect(() => {
         cardjson.then(data => {
             setCardData(data.data); // Assuming the structure of your JSON
+            console.log(cardData);
         });
     }, [cardjson]);
 

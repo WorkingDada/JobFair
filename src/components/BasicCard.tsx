@@ -8,10 +8,10 @@ import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
 import getCompany from '@/libs/getCompany'
-import Add from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import { useSession } from 'next-auth/react'
 import axios from 'axios'
+import Link from 'next/link';
 
 export default function BasicCard({ json, type, role }: { json: any, type: string, role: string}) {
 
@@ -26,17 +26,19 @@ export default function BasicCard({ json, type, role }: { json: any, type: strin
     
     const handleDelete = async () => {
         try {
+            console.log(session)
             const response = await axios.delete(`http://localhost:5001/api/v1/${type}/${json._id}`, {
                 headers: {
                     'Authorization': `Bearer ${session.data.user.token}` // Use the session token
                 }
             });
 
-
         } catch (error) {
             console.error("Error deleting the booking:", error);
             // Handle the error, such as showing a message to the user
+            console.log(error)
         }
+        window.location.reload()
     };
 
     
@@ -55,9 +57,7 @@ export default function BasicCard({ json, type, role }: { json: any, type: strin
         fetchCompanyData();
     }, [json, type]); // Dependencies: json and type
 
-
     const session = useSession()
-
 
     return (
         <Card className='hover:scale-110 duration-300 transition ease-in-out' sx={{ width: 320 }}>
@@ -115,19 +115,19 @@ export default function BasicCard({ json, type, role }: { json: any, type: strin
                         <Typography level="body-sm">Tel. {tel}</Typography>
                     </CardContent>
                 )}
-                {/* ADD ACTION TO THIS FORM */}
-                <form action=''>
-                <Button className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
-                    variant="outlined"
-                    size="md"
-                    color="success"
-                    sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
-                >
+                <Link href={json.company?.id ? `/createbooking/${json.company.id}` : `/createbooking/${json._id}`}>
+                    <Button className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+                        variant="outlined"
+                        type="submit"
+                        size="md"
+                        color="success"
+                        sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
+                    >
                         {
                             type === 'bookings' ? 'Book Again' : 'Book'
                         }
                     </Button>
-                </form>
+                </Link>
             </CardContent >
         </Card >
     );
