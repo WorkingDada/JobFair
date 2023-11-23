@@ -12,9 +12,9 @@ async function company() {
     const session = await getServerSession(authOptions)
 
     if (!session || !session.user.token) return null
-
+    
     const profile = await getUserProfile(session.user.token)
-
+    
     const companies = getCompanies()
 
     return (
@@ -22,7 +22,8 @@ async function company() {
             <div className='flex justify-between items-center p-5'>
                 <div className='text-3xl font-extrabold text-center flex-grow'>Company For Booking!</div>
                 {
-                    session.user.role === 'admin' ?
+                    
+                    profile.data.role === 'admin' ?
                         <Link href='/createcompany' passHref>
                             <IconButton className='flex items-center justify-between' aria-label="add company">
                                 <AddIcon fontSize="large" />
