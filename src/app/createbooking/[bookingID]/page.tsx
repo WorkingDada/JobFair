@@ -38,7 +38,7 @@ export default function CreateBooking({params}:{params : { bookingID : string } 
             console.log("Create Booking Error")
             console.log(error)
         }
-        // redirect("/")
+        
     };
 
     return (
@@ -50,7 +50,7 @@ export default function CreateBooking({params}:{params : { bookingID : string } 
                     <div className="flex items-center justify-center min-h-screen bg-gray-100">
                         <div className="w-full max-w-md px-6 py-10 bg-white rounded-3xl shadow-md bg-gradient-to-r from-purple-600 to-pink-600">
                             <h2 className="mb-6 text-2xl font-semibold text-center text-white">Create New Booking</h2>
-                            <form className="space-y-4" action={(FormData:FormData)=> { handleSubmit(FormData) ;}}>
+                            <form className="space-y-4" action={(FormData:FormData)=> { handleSubmit(FormData) ; redirect("/")}}>
                                 {/* Adjusted form fields for Company */}
                                 <input
                                     type="date"

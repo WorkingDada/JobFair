@@ -11,9 +11,10 @@ import getCompany from '@/libs/getCompany'
 import Add from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import { useSession } from 'next-auth/react'
+import Link from '../../node_modules/next/link';
 import axios from 'axios'
 
-export default function BasicCard({ json, type, role }: { json: any, type: string, role: string}) {
+export default function BasicCard({ json, type, role }: { json: any, type: string, role: string }) {
 
     const [imgsrc, setImgSrc] = useState(type !== 'bookings' ? json.picture : null);
     const companyname = type === 'bookings' ? json.company.name : json.name;
@@ -23,7 +24,7 @@ export default function BasicCard({ json, type, role }: { json: any, type: strin
     const province = json.province;
     const postalcode = json.postalcode;
     const tel = json.tel;
-    
+
     const handleDelete = async () => {
         try {
             const response = await axios.delete(`http://localhost:5001/api/v1/${type}/${json._id}`, {
@@ -38,8 +39,6 @@ export default function BasicCard({ json, type, role }: { json: any, type: strin
         window.location.reload()
     };
 
-    
-    
     useEffect(() => {
         const fetchCompanyData = async () => {
             if (type === 'bookings' && json.company) {
@@ -66,7 +65,7 @@ export default function BasicCard({ json, type, role }: { json: any, type: strin
                     <Typography level="title-lg">{companyname.toUpperCase()}</Typography>
                     <Typography className="px-2" level="body-sm">{business}</Typography>
                 </div>
-                {role === 'admin' || type === 'bookings' && (
+                {role === 'admin' && (
                     <IconButton
                         aria-label="edit"
                         className='hover:scale-110 duration-300 transition ease-in-out'
@@ -78,7 +77,31 @@ export default function BasicCard({ json, type, role }: { json: any, type: strin
                         <EditIcon />
                     </IconButton>
                 )}
-                {role === 'admin' || type === 'bookings' && (
+                {role === 'admin' && (
+                    <IconButton className='hover:scale-110 duration-300 transition ease-in-out'
+                        aria-label="bookmark"
+                        variant="plain"
+                        color="neutral"
+                        size="sm"
+                        onClick={handleDelete}
+                        sx={{ position: 'absolute', top: '0.875rem', right: '0.5rem' }}
+                    >
+                        <DeleteIcon />
+                    </IconButton>
+                )}
+                {type === 'bookings' && (
+                    <IconButton
+                        aria-label="edit"
+                        className='hover:scale-110 duration-300 transition ease-in-out'
+                        variant="plain"
+                        color="neutral"
+                        size="sm"
+                        sx={{ position: 'absolute', top: '0.875rem', right: '2.5rem' }} // Adjust position as needed
+                    >
+                        <EditIcon />
+                    </IconButton>
+                )}
+                {type === 'bookings' && (
                     <IconButton className='hover:scale-110 duration-300 transition ease-in-out'
                         aria-label="bookmark"
                         variant="plain"
@@ -115,19 +138,18 @@ export default function BasicCard({ json, type, role }: { json: any, type: strin
                         <Typography level="body-sm">Tel. {tel}</Typography>
                     </CardContent>
                 )}
-                {/* ADD ACTION TO THIS FORM */}
-                <form action='bookit'>
-                <Button className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
-                    variant="outlined"
-                    size="md"
-                    color="success"
-                    sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
-                >
+                <Link href={json.company?.id ? `/createbooking/${json.company.id}` : `/createbooking/${json._id}`}>
+                    <Button className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+                        variant="outlined"
+                        size="md"
+                        color="success"
+                        sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
+                    >
                         {
                             type === 'bookings' ? 'Book Again' : 'Book'
                         }
                     </Button>
-                </form>
+                </Link>
             </CardContent >
         </Card >
     );

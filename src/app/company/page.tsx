@@ -21,11 +21,16 @@ async function company() {
         <div className='pt-40 h-screen bg-white'>
             <div className='flex justify-between items-center p-5'>
                 <div className='text-3xl font-extrabold text-center flex-grow'>Company For Booking!</div>
-                <Link href='/createcompany' passHref>
-                    <IconButton className='flex items-center justify-between' aria-label="add company">
-                        <AddIcon fontSize="large" />
-                    </IconButton>
-                </Link>
+                {
+                    session.user.role === 'admin' ?
+                        <Link href='/createcompany' passHref>
+                            <IconButton className='flex items-center justify-between' aria-label="add company">
+                                <AddIcon fontSize="large" />
+                            </IconButton>
+                        </Link>
+                        :
+                        <div></div>
+                }
                 <div className='h-full w-auto p-5'></div>
             </div>
             <div className="grid justify-items-center">
