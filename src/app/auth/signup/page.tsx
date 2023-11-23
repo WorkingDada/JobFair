@@ -20,13 +20,18 @@ export default function SignUpPage() {
 
         // Connect to Database and Create User
         try {
-            await dbConnect()
-            const user = await User.create({
-                "name": name,
-                "email": email,
-                "tel": tel,
-                "password": password
-            })
+            const response = await fetch('http://localhost:5001/api/v1/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email,
+                password,
+                tel,
+                name
+            }),
+        })
         } catch (error) {
             console.log("Register User Error")
             console.log(error)
